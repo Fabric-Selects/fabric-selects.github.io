@@ -1,0 +1,143 @@
+<html>
+  <head>
+    {{ $main_options := (dict "targetPath" "css/styles.css" "outputStyle" "compressed") -}}
+    {{ $main_style := resources.Get "sass/single.sass" | toCSS $main_options | fingerprint -}}
+    <link rel="stylesheet" href="{{ $main_style.RelPermalink }}">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <title>{{ if isset .Params "title" }} {{ .Params.title }} | {{ end }}{{ .Site.Title }}</title>
+  </head>
+
+  <body>
+
+    <header>
+      <div class="left">
+        <p>fabric/selects</p>
+      </div>
+      <div class="right">
+        <a href="../../">home</a>
+        <a href="../../about">about</a>
+      </div>
+    </header>
+
+
+    <frontmatter>
+      <div class="head">
+        <img width="75" height="75" src="{{ absURL .Params.icon }}"></img>
+        <div class="text">
+          <p class="title">{{ .Params.title }}</p>
+          <p class="description">{{ .Params.description }}</p>
+        </div>
+      </div>
+      {{ if or (or (or (or (or (or (isset .Params "homepage") (isset .Params "issues")) (isset .Params "source")) (isset .Params "releases")) (isset .Params "wiki")) (isset .Params "discord")) (isset .Params "donate") }}
+        <div class="links">
+          {{ if isset .Params "homepage" }}
+            <a href="{{ .Params.homepage }}">Homepage</a>
+          {{ end }}
+          {{ if isset .Params "source" }}
+            <a href="{{ .Params.source }}">Sources</a>
+          {{ end }}
+          {{ if isset .Params "issues" }}
+            <a href="{{ .Params.issues }}">Issues</a>
+          {{ end }}
+          {{ if isset .Params "releases" }}
+            <a href="{{ .Params.releases }}">Releases</a>
+          {{ end }}
+          {{ if isset .Params "wiki" }}
+            <a href="{{ .Params.wiki }}">Wiki</a>
+          {{ end }}
+          {{ if isset .Params "discord" }}
+            <a href="{{ .Params.discord }}">Discord</a>
+          {{ end }}
+          {{ if isset .Params "donate" }}
+            <a href="{{ .Params.donate }}">Donate</a>
+          {{ end }}
+        </div>
+      {{ end }}
+    </frontmatter>
+
+    <metadata>
+
+      {{ if isset .Params "authors" }}
+        <div class="authors">
+          <p class="title">Authors</p>
+          {{ range .Params.authors }}
+            {{ $author := . }}
+            {{ with $.Site.GetPage ( printf "user/%s" .user ) }}
+              <a href="{{ .Permalink }}"><div class="user">
+                {{ if isset .Params "icon" }}<img width="25" height="25" src="{{ .Params.icon }}"></img>{{ end }}
+                <div class="text">
+                  <p class="name">{{ .Params.name }}</p>
+                  {{ if isset $author "type" }}<p class="type">{{ $author.type }}</p>{{ end }}
+                </div>
+              </div></a>
+            {{ end }}
+          {{ end }}
+        </div>
+      {{ end }}
+
+      {{ if isset .Params "contributors" }}
+        <div class="contributors">
+          <p class="title">Contributors</p>
+          {{ range .Params.contributors }}
+            {{ $contributor := . }}
+            {{ with $.Site.GetPage ( printf "user/%s" .user ) }}
+              <a href="{{ .Permalink }}"><div class="user">
+                {{ if isset .Params "icon" }}<img width="25" height="25" src="{{ .Params.icon }}"></img>{{ end }}
+                <div class="text">
+                  <p class="name">{{ .Params.name }}</p>
+                  {{ if isset $contributor "type" }}<p class="type">{{ $contributor.type }}</p>{{ end }}
+                </div>
+              </div></a>
+            {{ end }}
+          {{ end }}
+        </div>
+      {{ end }}
+
+      {{ if isset .Params "dependencies" }}
+        <div class="dependencies">
+          <p class="title">Dependencies</p>
+          {{ range .Params.dependencies }}
+            {{ $mod := . }}
+            {{ with $.Site.GetPage ( printf "mod/%s" .mod ) }}
+              <a href="{{ .Permalink }}"><div class="mod">
+                {{ if isset .Params "icon" }}<img width="25" height="25" src="{{ .Params.icon }}"></img>{{ end }}
+                <div class="text">
+                  <p class="title">{{ .Params.title }}</p>
+                  {{ if isset $mod "type" }}<p class="type">{{ $mod.type }}</p>{{ end }}
+                </div>
+              </div></a>
+            {{ end }}
+          {{ end }}
+        </div>
+      {{ end }}
+
+      {{ if isset .Params "categories" }}
+        <div class="categories">
+          <p class="title">Categories</p>
+          {{ range .Params.categories }}
+            {{ with $.Site.GetPage ( printf "category/%s" ( urlize .) ) }}
+              <a href="{{ .Permalink }}"><div class="category">
+                {{ if isset .Params "icon" }}<img width="25" height="25" src="{{ absURL .Params.icon }}"></img>{{ end }}
+                <div class="text">
+                  <p class="title">{{ .Params.title }}</p>
+                </div>
+              </div></a>
+            {{ end }}
+          {{ end }}
+        </div>
+      {{ end }}
+
+
+    </metadata>
+
+    <content>
+      {{ .Content }}
+    </content>
+
+
+
+    <footer>
+    </footer>
+
+  </body>
+</html>

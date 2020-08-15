@@ -1,0 +1,229 @@
+$dark-grey: black
+$mid-grey: #707070
+$light-grey: #EFEFEF
+
+ul
+  margin: 0px
+
+ol, ul, dl
+  overflow-x: scroll
+  ol, ul, dl
+    overflow-x: visible
+
+p, ol, ul, li, a, table, dl, dt, dd
+  font-family: "Open Sans", sans-serif
+  line-height: 1.375em
+  color: $mid-grey
+
+dl
+  display: grid
+  grid-template-columns: [terms] max-content [definitions] max-content
+  grid-column-gap: 10px
+
+dt
+  grid-column: terms / terms
+
+dd
+  border-left: solid 1px $light-grey
+  margin-left: 0px
+  padding-left: 10px
+  grid-column: definitions / definitions
+
+sup > a::before
+  content: ""
+
+
+a:hover
+  color: $dark-grey
+
+h1, h2, h3, h4, h5, h6
+  font-family: "Open Sans", sans-serif
+  color: $dark-grey
+  font-weight: 500
+
+hr
+  border: 1px solid $light-grey
+
+table
+  border-collapse: collapse
+  max-width: inherit
+
+th, td
+  padding: 5px 15px 5px 15px
+  border: 1px solid $light-grey
+
+td:first-child, th:first-child
+  border-left: none
+
+td:last-child, th:last-child
+  border-right: none
+
+thead > tr > th
+  border-top: none
+
+tbody > tr:last-child > td
+  border-bottom: none
+
+table code, p > code
+  border: 1px solid $light-grey
+  border-radius: 5px
+  padding: 5px 5px 5px 5px
+  color: black
+  line-height: 1.9em
+  overflow-x: wrap
+  overflow-wrap: break-word
+  white-space: normalx
+
+
+pre
+  background: white
+  padding: 5px
+  border-radius: 5px
+  border: 1px solid $light-grey
+  overflow-x: scroll
+
+blockquote
+  border-left: 1px solid $light-grey
+  margin-left: 10px
+
+blockquote blockquote
+  margin-left: 10px
+
+blockquote > p
+  padding-left: 10px
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+p, a
+  font-family: "Open Sans", sans-serif
+
+body, p
+  margin: 0px
+  padding: 0px
+
+header
+  display: flex
+  justify-content: space-between
+  font-size: 18px
+  div
+    display: flex
+    a, p
+      padding: 10px
+      margin: 10px
+      text-decoration: none
+
+body
+  display: grid
+  grid-template-columns: auto minmax(min-content, 800px) 20px minmax(min-content, 200px) auto
+  grid-template-rows: auto min-content auto
+  header
+    grid-column: 2 / 5
+    grid-row: 1 / 2
+  frontmatter
+    grid-column: 2 / 3
+    grid-row: 2 / 3
+  metadata
+    grid-column: 4 / 5
+    grid-row: 3 / 4
+  content
+    grid-column: 2 / 3
+    grid-row: 3 / 4
+
+frontmatter
+  padding: 20px
+  display: flex
+  flex-direction: column
+  .head
+    display: grid
+    grid-template-columns: [left] min-content [space-start] 20px [space-end] auto [right]
+    img
+      grid-column: left / space-start
+      border-radius: 10%
+    .text
+      grid-column: space-end / right
+      display: flex
+      flex-direction: column
+      justify-content: center
+      p.title
+        font-size: 24px
+        font-weight: bold
+        color: black
+      p.description
+        font-size: 18px
+  .links
+    margin-top: 20px
+    a
+      background: none
+      border-radius: 5px
+      border: solid 1.5px $mid-grey
+      color: $mid-grey
+      text-decoration: none
+      padding: 5px 10px 5px 10px
+      font-size: 14px
+    a:hover
+      background: $mid-grey
+      color: white
+
+
+metadata
+  > div
+    margin-bottom: 10px
+    a
+      text-decoration: none
+      .user,
+        display: grid
+        grid-template-columns: min-content 10px auto
+        padding: 5px
+        align-items: center
+        img
+          grid-column: 1 / 2
+          border-radius: 10%
+        .text
+          grid-column: 3 / 4
+          display: flex
+          flex-direction: column
+          .name
+            font-size: 16px
+            color: black
+          .type
+            font-size: 14px
+            color: grey
+      .mod, .category
+        display: grid
+        grid-template-columns: min-content 10px auto
+        padding: 5px
+        align-items: center
+        img
+          grid-column: 1 / 2
+          border-radius: 10%
+        .text
+          grid-column: 3 / 4
+          display: flex
+          flex-direction: column
+          .title
+            font-size: 16px
+            color: black
+          .type
+            font-size: 14px
+            color: grey
