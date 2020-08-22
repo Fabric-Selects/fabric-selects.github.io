@@ -1,6 +1,6 @@
 {
   "title": "CraftPresence",
-  "description": "Completely customize the way others see you play Minecraft via Discord's Rich Presence API & the DiscordIPC API by jagrosh",
+  "description": "Completely customize the way others see you play Minecraft via Discord's Rich Presence API & the DiscordIPC API by jagrosh!",
   "icon": "https://media.forgecdn.net/avatars/159/374/636658415780463602.png",
   "homepage": "https://www.curseforge.com/minecraft/mc-mods/craftpresence",
   "issues": "https://gitlab.com/CDAGaming/CraftPresence/issues",
