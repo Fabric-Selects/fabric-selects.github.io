@@ -9,18 +9,20 @@
     "essential",
     "library"
   ],
-  "authors": [
-    {
-      "user": "asiekierka",
-      "type": "Founder"
-    }
+
+  "users": [
+    "asiekierka",
+    "modmuss"
   ],
-  "contributors": [
-    {
-      "user": "modmuss",
-      "type": "Maintainer"
-    }
+  "user_type": [
+    "Founder",
+    "Maintainer"
+  ],
+  "user_contribution_type": [
+    "author",
+    "contributor"
   ]
+
 }
 
 Fabric API is a cool mod that does stuff

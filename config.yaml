@@ -8,3 +8,7 @@ markup:
        typographer: true
     renderer:
        unsafe: true
+taxonomies:
+  user: users
+  dependency: dependencies
+  group: groups

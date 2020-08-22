@@ -1,7 +1,7 @@
 <html>
   <head>
     {{ $main_options := (dict "targetPath" "css/styles.css" "outputStyle" "compressed") -}}
-    {{ $main_style := resources.Get "sass/single.sass" | toCSS $main_options | fingerprint -}}
+    {{ $main_style := resources.Get "sass/mod.sass" | toCSS $main_options | fingerprint -}}
     <link rel="stylesheet" href="{{ $main_style.RelPermalink }}">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
     <title>{{ if isset .Params "title" }} {{ .Params.title }} | {{ end }}{{ .Site.Title }}</title>
@@ -57,53 +57,112 @@
 
     <metadata>
 
-      {{ if isset .Params "authors" }}
-        <div class="authors">
-          <p class="title">Authors</p>
-          {{ range .Params.authors }}
-            {{ $author := . }}
-            {{ with $.Site.GetPage ( printf "user/%s" .user ) }}
-              <a href="{{ .Permalink }}"><div class="user">
-                {{ if isset .Params "icon" }}<img width="25" height="25" src="{{ .Params.icon }}"></img>{{ end }}
-                <div class="text">
-                  <p class="name">{{ .Params.name }}</p>
-                  {{ if isset $author "type" }}<p class="type">{{ $author.type }}</p>{{ end }}
-                </div>
-              </div></a>
+      {{ if isset .Params "users" }}
+
+        {{ $site := . }}
+        {{ $.Scratch.Set "has_authors" false }}
+        {{ range $index, $element := .Params.users }}
+          {{ if not ($.Scratch.Get "has_authors") }}
+            {{ if isset $site.Params "user_contribution_type" }}
+              {{ if gt (len $site.Params.user_contribution_type) (int $index) }}
+                {{ if eq (index $site.Params.user_contribution_type (int $index)) "author" }}
+                  {{ $.Scratch.Set "has_authors" true }}
+                {{ end }}
+              {{ end }}
             {{ end }}
           {{ end }}
-        </div>
+        {{ end }}
+
+        {{ $.Scratch.Set "has_contributors" false }}
+        {{ range $index, $element := .Params.users }}
+          {{ if not ($.Scratch.Get "has_contributors") }}
+            {{ if (isset $site.Params "user_contribution_type") }}
+              {{ if gt (len $site.Params.user_contribution_type) (int $index) }}
+                {{ if eq (index $site.Params.user_contribution_type (int $index)) "contributor" }}
+                  {{ $.Scratch.Set "has_contributors" true }}
+                {{ end }}
+              {{ else }}
+                {{ $.Scratch.Set "has_contributors" true }}
+              {{ end }}
+            {{ else }}
+              {{ $.Scratch.Set "has_contributors" true }}
+            {{ end }}
+          {{ end }}
+        {{ end }}
+
+        {{ if $.Scratch.Get "has_authors" }}
+          <div class="authors">
+            <p class="title">Authors</p>
+            {{ range $index, $element := .Params.users }}
+              {{ if isset $site.Params "user_contribution_type" }}
+                {{ if gt (len $site.Params.user_contribution_type) (int $index) }}
+                  {{ if eq (index $site.Params.user_contribution_type (int $index)) "author" }}
+
+                    {{ with $.Site.GetPage ( printf "users/%s" $element ) }}
+                      <a href="{{ .Permalink }}"><div class="user">
+                        {{ if isset .Params "icon" }}<img width="25" height="25" src="{{ .Params.icon }}"></img>{{ end }}
+                        <div class="text">
+                          <p class="name">{{ .Params.name }}</p>
+                          {{ if isset $site.Params "user_type" }}{{ if gt (len $site.Params.user_type) (int $index) }}{{ if ne (index $site.Params.user_type (int $index)) "" }}<p class="type">{{ index $site.Params.user_type (int $index) }}</p>{{ end }}{{ end }}{{ end }}
+                        </div>
+                      </div></a>
+                    {{ end }}
+
+                  {{ end }}
+                {{ end }}
+              {{ end }}
+            {{ end }}
+          </div>
+        {{ end }}
+
+        {{ if $.Scratch.Get "has_contributors" }}
+          <div class="contributors">
+            <p class="title">Contributors</p>
+            {{ range $index, $element := .Params.users }}
+              {{ $.Scratch.Set "contributor" false }}
+              {{ if (isset $site.Params "user_contribution_type") }}
+                {{ if gt (len $site.Params.user_contribution_type) (int $index) }}
+                  {{ if eq (index $site.Params.user_contribution_type (int $index)) "contributor" }}
+                    {{ $.Scratch.Set "contributor" true }}
+                  {{ end }}
+                {{ else }}
+                  {{ $.Scratch.Set "contributor" true }}
+                {{ end }}
+              {{ else }}
+                {{ $.Scratch.Set "contributor" true }}
+              {{ end }}
+
+              {{ if $.Scratch.Get "contributor" }}
+                {{ with $.Site.GetPage ( printf "users/%s" $element ) }}
+                  <a href="{{ .Permalink }}"><div class="user">
+                    {{ if isset .Params "icon" }}<img width="25" height="25" src="{{ .Params.icon }}"></img>{{ end }}
+                    <div class="text">
+                      <p class="name">{{ .Params.name }}</p>
+                      {{ if isset $site.Params "user_type" }}{{ if gt (len $site.Params.user_type) (int $index) }}{{ if ne (index $site.Params.user_type (int $index)) "" }}<p class="type">{{ index $site.Params.user_type (int $index) }}</p>{{ end }}{{ end }}{{ end }}
+                    </div>
+                  </div></a>
+                {{ end }}
+              {{ end }}
+
+            {{ end }}
+          </div>
+        {{ end }}
+
       {{ end }}
 
-      {{ if isset .Params "contributors" }}
-        <div class="contributors">
-          <p class="title">Contributors</p>
-          {{ range .Params.contributors }}
-            {{ $contributor := . }}
-            {{ with $.Site.GetPage ( printf "user/%s" .user ) }}
-              <a href="{{ .Permalink }}"><div class="user">
-                {{ if isset .Params "icon" }}<img width="25" height="25" src="{{ .Params.icon }}"></img>{{ end }}
-                <div class="text">
-                  <p class="name">{{ .Params.name }}</p>
-                  {{ if isset $contributor "type" }}<p class="type">{{ $contributor.type }}</p>{{ end }}
-                </div>
-              </div></a>
-            {{ end }}
-          {{ end }}
-        </div>
-      {{ end }}
+
 
       {{ if isset .Params "dependencies" }}
         <div class="dependencies">
           <p class="title">Dependencies</p>
-          {{ range .Params.dependencies }}
-            {{ $mod := . }}
-            {{ with $.Site.GetPage ( printf "mod/%s" .mod ) }}
+          {{ $site := . }}
+          {{ range $index, $element := .Params.dependencies }}
+            {{ with $.Site.GetPage ( printf "mod/%s" $element ) }}
               <a href="{{ .Permalink }}"><div class="mod">
                 {{ if isset .Params "icon" }}<img width="25" height="25" src="{{ .Params.icon }}"></img>{{ end }}
                 <div class="text">
                   <p class="title">{{ .Params.title }}</p>
-                  {{ if isset $mod "type" }}<p class="type">{{ $mod.type }}</p>{{ end }}
+                  {{ if isset $site.Params "dependency_type" }}{{ if gt (len $site.Params.dependency_type) (int $index) }}{{ if ne (index $site.Params.dependency_type (int $index)) "" }}<p class="type">{{ index $site.Params.dependency_type (int $index) }}</p>{{ end }}{{ end }}{{ end }}
                 </div>
               </div></a>
             {{ end }}

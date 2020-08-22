@@ -1,0 +1,77 @@
+<html>
+  <head>
+    {{ $main_options := (dict "targetPath" "css/styles.css" "outputStyle" "compressed") -}}
+    {{ $main_style := resources.Get "sass/user.sass" | toCSS $main_options | fingerprint -}}
+    <link rel="stylesheet" href="{{ $main_style.RelPermalink }}">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <title>{{ if isset .Params "title" }} {{ .Params.title }} | {{ end }}{{ .Site.Title }}</title>
+  </head>
+
+  <body>
+
+    <header>
+      <div class="left">
+        <p>fabric/selects</p>
+      </div>
+      <div class="right">
+        <a href="../../">home</a>
+        <a href="../../about">about</a>
+      </div>
+    </header>
+
+
+    <frontmatter>
+      <div class="head">
+        <img width="75" height="75" src="{{ absURL .Params.icon }}"></img>
+        <div class="text">
+          <p class="title">{{ .Params.name }}</p>
+          <p class="description">{{ .Params.bio }}</p>
+        </div>
+      </div>
+      {{ if  or (or (or (isset .Params "website") (isset .Params "twitter")) (isset .Params "github")) (isset .Params "donate") }}
+        <div class="links">
+          {{ if isset .Params "website" }}
+            <a href="{{ .Params.website }}">Website</a>
+          {{ end }}
+          {{ if isset .Params "twitter" }}
+            <a href="{{ .Params.twitter }}">Twitter</a>
+          {{ end }}
+          {{ if isset .Params "github" }}
+            <a href="{{ .Params.github }}">GitHub</a>
+          {{ end }}
+          {{ if isset .Params "donate" }}
+            <a href="{{ .Params.donate }}">Donate</a>
+          {{ end }}
+        </div>
+      {{ end }}
+    </frontmatter>
+
+    <content>
+      {{ .Content }}
+
+      <div class="mods">
+        <p class="title">Mods</p>
+        {{ if gt (len .Pages) 0 }}
+          {{ range .Pages }}
+            <a href="{{ .Permalink }}"><div class="mod">
+              <img width="50" height="50" src="{{ absURL .Params.icon }}"></img>
+              <div class="text">
+                <p class="title">{{ .Params.title }}</p>
+                <p class="description">{{ .Params.description }}</p>
+              </div>
+            </div></a>
+          {{ end }}
+        {{ else }}
+          <p>This user has not contributed to any projects</p>
+        {{ end }}
+      </div>
+
+    </content>
+
+
+
+    <footer>
+    </footer>
+
+  </body>
+</html>
