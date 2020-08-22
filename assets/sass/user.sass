@@ -15,6 +15,10 @@ p, ol, ul, li, a, table, dl, dt, dd
   line-height: 1.375em
   color: $mid-grey
 
+content
+  p
+    margin: 10px 0 10px 0
+
 dl
   display: grid
   grid-template-columns: [terms] max-content [definitions] max-content
@@ -92,6 +96,9 @@ blockquote blockquote
 blockquote > p
   padding-left: 10px
 
+content
+  img
+    max-width: 100%
 
 
 
@@ -146,6 +153,9 @@ body
   content
     grid-column: 2 / 3
     grid-row: 3 / 4
+  footer
+    grid-column: 2 / 5
+    grid-row: 4 / 5
 
 frontmatter
   padding: 20px
@@ -199,6 +209,7 @@ frontmatter
       img
         grid-column: left / space-start
         border-radius: 10%
+        max-width: none
       .text
         grid-column: space-end / right
         display: flex
@@ -208,5 +219,10 @@ frontmatter
           font-size: 24px
           font-weight: bold
           color: black
+          margin: 0
         p.description
           font-size: 18px
+          margin: 0
+
+footer
+  padding-top: 40px
