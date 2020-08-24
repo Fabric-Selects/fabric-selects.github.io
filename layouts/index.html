@@ -1,0 +1,42 @@
+<html>
+  <head>
+    {{ $main_options := (dict "targetPath" "css/styles.css" "outputStyle" "compressed") -}}
+    {{ $main_style := resources.Get "sass/home.sass" | toCSS $main_options | fingerprint -}}
+    <link rel="stylesheet" href="{{ $main_style.RelPermalink }}">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <title>{{ .Site.Title }}</title>
+  </head>
+  <body>
+
+    <header>
+      <div class="left">
+        <p>fabric/selects</p>
+      </div>
+      <div class="right">
+        <a href="../../">home</a>
+        <a href="../../about">about</a>
+      </div>
+    </header>
+
+    <content>
+
+      <p>Welcome to fabric selects. To start looking for a mod click below to search alphabetically!</p>
+
+      <p class="title">Search Alphabetically</p>
+
+      <div class="pagination">
+        {{ $letters := split "abcedfghijklmnopqrstuvwxyz" "" }}
+        {{ range (where .Site.RegularPages "Section" "mod") }}
+          {{ $firstChar := substr .Params.title 0 1 | lower }}
+          {{ if $firstChar | in $letters }}
+            {{ $curLetter := $.Scratch.Get "curLetter" }}
+            {{ if ne $firstChar $curLetter }}
+              {{ $.Scratch.Set "curLetter" $firstChar }}
+              <a class="{{ $firstChar }}" href="{{ with .Site.GetPage (printf "/alpha/%s" $firstChar) }}{{ .Permalink }}{{ end }}">{{ $firstChar }}</a>
+            {{ end }}
+          {{ end }}
+        {{ end }}
+      </div>
+    <content>
+  </body>
+</html>

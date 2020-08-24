@@ -1,0 +1,13 @@
+<div class="pagination">
+  {{ $letters := split "abcedfghijklmnopqrstuvwxyz" "" }}
+  {{ range (where .Site.RegularPages "Section" "mod") }}
+    {{ $firstChar := substr .Params.title 0 1 | lower }}
+    {{ if $firstChar | in $letters }}
+      {{ $curLetter := $.Scratch.Get "curLetter" }}
+      {{ if ne $firstChar $curLetter }}
+        {{ $.Scratch.Set "curLetter" $firstChar }}
+        <a class="{{ $firstChar }}" href="{{ with .Site.GetPage (printf "/alpha/%s" $firstChar) }}{{ .Permalink }}{{ end }}">{{ $firstChar }}</a>
+      {{ end }}
+    {{ end }}
+  {{ end }}
+</div>
