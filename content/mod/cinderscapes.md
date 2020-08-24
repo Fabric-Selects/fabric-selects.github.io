@@ -1,7 +1,7 @@
 {
   "title": "Cinderscapes",
   "description": "A mod that adds extra biomes to the nether",
-  "icon": "./mod/cinderscapes.png",
+  "icon": "/mod/cinderscapes.png",
   "homepage": "https://terraformersmc.com/mod/cinderscapes",
   "issues": "https://github.com/TerraformersMC/Cinderscapes/issues",
   "source": "https://github.com/TerraformersMC/Cinderscapes",
@@ -35,10 +35,15 @@
 
   "dependencies": [
     "fabric-api",
-    "mod-menu"
+    "mod-menu",
+    "traverse",
+    "terrestria",
+    "campanion"
   ],
   "dependency_type": [
     "Depends Hard",
+    "Recommended",
+    "Recommended",
     "Recommended"
   ]
 
